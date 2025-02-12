@@ -1,0 +1,37 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: helidonTodoApp
+  labels:
+    app: helidonTodoApp
+spec:
+  type: ClusterIP
+  selector:
+    app: helidonTodoApp
+  ports:
+    - name: tcp
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: helidonTodoApp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: helidonTodoApp
+  template:
+    metadata:
+      labels:
+        app: helidonTodoApp
+        version: v1
+    spec:
+      containers:
+      - name: helidonTodoApp
+        image: helidonTodoApp
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
